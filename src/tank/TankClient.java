@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 public class TankClient extends Thread{
     private Socket socket;
     private DataOutputStream dos;
-    private DataInputStream dis;
     private String ip="127.0.0.1";
     private ServerSocket serverSocket;
     private int port=6000;
@@ -20,7 +19,6 @@ private boolean connect() {
 		try {
 			socket = new Socket(ip, port);
 			dos = new DataOutputStream(socket.getOutputStream());
-			dis = new DataInputStream(socket.getInputStream());
 		} catch (IOException e) {
 			System.out.println("Unable to connect to the address: ");
 			return false;
@@ -33,7 +31,7 @@ private boolean connect() {
     public void run(String msg){
      connect();
         try {        
-            dos.writeChars(msg);
+            dos.writeBytes(msg);
             dos.flush();
             socket.close();
         } catch (IOException ex) {
