@@ -6,14 +6,13 @@
 package tank;
 
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import map.Mapviewer;
 
 public class TankServer extends Thread{
     ServerSocket serverSocket;
@@ -26,13 +25,18 @@ public class TankServer extends Thread{
     }
     @Override
     public void run(){
-        cli.run("JOIN#");
+        cli.run("JOIN#");//request to join the server
         
         while(true){
             try {
                 socket=serverSocket.accept();
                 BufferedReader msg=new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                System.out.println(msg.readLine());
+                String s=msg.readLine();
+                System.out.println(s);
+                if(s.charAt(0)=='I'&&s.charAt(1)==':'){//for priority I
+                    Mapviewer.createMap(s);
+                }
+                 
             } catch (IOException ex) {
                 Logger.getLogger(TankServer.class.getName()).log(Level.SEVERE, null, ex);
             }
