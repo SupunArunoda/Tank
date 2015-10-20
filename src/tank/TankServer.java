@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package tank;
 
 import java.io.BufferedReader;
@@ -25,7 +21,7 @@ public class TankServer extends Thread{
     }
     @Override
     public void run(){
-        cli.run("JOIN#");//request to join the server
+        cli.run("JOIN#");//request to join the game server
         
         while(true){
             try {
@@ -35,6 +31,10 @@ public class TankServer extends Thread{
                 System.out.println(s);
                 if(s.charAt(0)=='I'&&s.charAt(1)==':'){//for priority I
                     Mapviewer.createMap(s);
+                }
+                if(s.charAt(0)=='G'&&s.charAt(1)==':'){
+                    
+                    Mapviewer.updateMap(s);
                 }
                  
             } catch (IOException ex) {

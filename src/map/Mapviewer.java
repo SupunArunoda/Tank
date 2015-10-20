@@ -16,10 +16,17 @@ public class Mapviewer {
    static int mapMax=10;
    static int map[][]=new int[mapMax][mapMax];
    static int x=0,y=0;
+   static String P0;
+   static String P1;
+   static String P2;
+   static String P3;
+   static String P4;
+   
     
     public static void createMap(String address){
         
-         String I;
+        String I;
+        String playerNum;
         String brick;
         String stone;
         String water;
@@ -30,11 +37,11 @@ public class Mapviewer {
 String new_add=address.substring(0, address.length()-1);// to remove last # mark
         StringTokenizer str = new StringTokenizer(new_add, ":");
         I = str.nextToken();//check first value I,G, S etc
-        String playerNum = str.nextToken();//get player names
+        playerNum = str.nextToken();//get player names
         brick = str.nextToken();//get bricks pattern
         stone = str.nextToken();//get stones pattern
         water = str.nextToken();//get water patterns
-        System.out.println("I "+I+" brick "+brick+" stone "+stone+" water "+water);
+        System.out.println("I = "+I+" brick = "+brick+" stone = "+stone+" water = "+water);
         
         StringTokenizer bri=new StringTokenizer(brick, ";");
         for(int i=0;bri.hasMoreTokens();i++){
@@ -70,12 +77,69 @@ String new_add=address.substring(0, address.length()-1);// to remove last # mark
             y=Integer.parseInt(positions[1]);
             map[y][x]=3;//3 for water
         }
-         for(int i=0;i<mapMax;i++){
+        printMap();
+         
+    }
+    private static void printMap(){
+        for(int i=0;i<mapMax;i++){
             for(int j=0;j<mapMax;j++){
                 System.out.print(map[i][j]);
             } 
              System.out.println();
          }
+        
     }
+    public static void updateMap(String G){
+        String raw_st = G.substring(2,G.length());
+        System.out.println(raw_st);
+       
+        StringTokenizer upmap=new StringTokenizer(raw_st, ":");
+        for(int i=0;upmap.hasMoreTokens();i++){
+            
+            String k=upmap.nextToken();
+            if(k.charAt(0)=='P'){
+                playerUpdateStatus(k);
+            }
+        
+        
+    }
+        
+    
+}
+    private static void playerUpdateStatus(String P){
+        int id=0;//unique id for each player 
+        if("P0".equals(P.substring(0, 2))){
+            P0=P;
+            id=10;
+        }
+        else if("P1".equals(P.substring(0, 2))){
+            P1=P;
+            id=11;
+        }
+        else if("P2".equals(P.substring(0, 2))){
+            P2=P;
+            id=12;
+        }
+        else if("P3".equals(P.substring(0, 2))){
+            P3=P;
+            id=13;
+        }
+        if("P4".equals(P.substring(0, 2))){
+            P4=P;
+            id=14;
+        }
+            ArrayList<String> tokens=new ArrayList<String>();
+            StringTokenizer player=new StringTokenizer(P, ";");
+            while(player.hasMoreTokens()){
+                tokens.add(player.nextToken());
+            }
+            String positions[]=tokens.get(1).split(",");
+            x=Integer.parseInt(positions[0]);
+            y=Integer.parseInt(positions[1]);
+            
+            
+            map[y][x]=id;
+            printMap();
+        }
     
 }
