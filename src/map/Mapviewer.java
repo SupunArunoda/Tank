@@ -14,7 +14,7 @@ import java.util.StringTokenizer;
  */
 public class Mapviewer {
    static int mapMax=10;
-   static int map[][]=new int[mapMax][mapMax];
+   static String map[][]=new String[mapMax][mapMax];
    static int x=0,y=0;
    static String P0;
    static String P1;
@@ -57,25 +57,25 @@ String new_add=address.substring(0, address.length()-1);// to remove last # mark
         }
         for(int i=0;i<mapMax;i++){
             for(int j=0;j<mapMax;j++){
-                map[i][j]=0;
+                map[i][j]="0";
             } }
         for(int i=0;i<brick_pos.size();i++){
             String positions[]=brick_pos.get(i).split(",");
             x=Integer.parseInt(positions[0]);
             y=Integer.parseInt(positions[1]);
-            map[y][x]=1;//1 for brick
+            map[y][x]="1";//1 for brick
         }
         for(int i=0;i<stone_pos.size();i++){
             String positions[]=stone_pos.get(i).split(",");
             x=Integer.parseInt(positions[0]);
             y=Integer.parseInt(positions[1]);
-            map[y][x]=2;//2 for stone
+            map[y][x]="2";//2 for stone
         }
         for(int i=0;i<water_pos.size();i++){
             String positions[]=water_pos.get(i).split(",");
             x=Integer.parseInt(positions[0]);
             y=Integer.parseInt(positions[1]);
-            map[y][x]=3;//3 for water
+            map[y][x]="3";//3 for water
         }
         printMap();
          
@@ -91,7 +91,7 @@ String new_add=address.substring(0, address.length()-1);// to remove last # mark
     }
     public static void updateMap(String G){
         String raw_st = G.substring(2,G.length());
-        System.out.println(raw_st);
+        
        
         StringTokenizer upmap=new StringTokenizer(raw_st, ":");
         for(int i=0;upmap.hasMoreTokens();i++){
@@ -107,26 +107,26 @@ String new_add=address.substring(0, address.length()-1);// to remove last # mark
     
 }
     private static void playerUpdateStatus(String P){
-        int id=0;//unique id for each player 
+        
         if("P0".equals(P.substring(0, 2))){
             P0=P;
-            id=10;
+            
         }
         else if("P1".equals(P.substring(0, 2))){
             P1=P;
-            id=11;
+            
         }
         else if("P2".equals(P.substring(0, 2))){
             P2=P;
-            id=12;
+            
         }
         else if("P3".equals(P.substring(0, 2))){
             P3=P;
-            id=13;
+            
         }
         if("P4".equals(P.substring(0, 2))){
             P4=P;
-            id=14;
+            
         }
             ArrayList<String> tokens=new ArrayList<String>();
             StringTokenizer player=new StringTokenizer(P, ";");
@@ -138,7 +138,7 @@ String new_add=address.substring(0, address.length()-1);// to remove last # mark
             y=Integer.parseInt(positions[1]);
             
             
-            map[y][x]=id;
+            map[y][x]=tokens.get(0);
             printMap();
         }
     
