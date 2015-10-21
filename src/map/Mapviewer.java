@@ -16,11 +16,11 @@ public class Mapviewer {
    static int mapMax=10;
    static String map[][]=new String[mapMax][mapMax];
    static int x=0,y=0;
-   static String P0;
-   static String P1;
-   static String P2;
-   static String P3;
-   static String P4;
+   static ArrayList<String> P0;
+   static ArrayList<String> P1;
+   static ArrayList<String> P2;
+   static ArrayList<String> P3;
+   static ArrayList<String> P4;
    
     
     public static void createMap(String address){
@@ -108,26 +108,7 @@ String new_add=address.substring(0, address.length()-1);// to remove last # mark
 }
     private static void playerUpdateStatus(String P){
         
-        if("P0".equals(P.substring(0, 2))){
-            P0=P;
-            
-        }
-        else if("P1".equals(P.substring(0, 2))){
-            P1=P;
-            
-        }
-        else if("P2".equals(P.substring(0, 2))){
-            P2=P;
-            
-        }
-        else if("P3".equals(P.substring(0, 2))){
-            P3=P;
-            
-        }
-        if("P4".equals(P.substring(0, 2))){
-            P4=P;
-            
-        }
+        
             ArrayList<String> tokens=new ArrayList<String>();
             StringTokenizer player=new StringTokenizer(P, ";");
             while(player.hasMoreTokens()){
@@ -139,7 +120,24 @@ String new_add=address.substring(0, address.length()-1);// to remove last # mark
             
             
             map[y][x]=tokens.get(0);
+            if("P0".equals(tokens.get(0))){
+                P0 =tokens;
+            }
+            else if("P1".equals(tokens.get(0))){
+                P1 =tokens;
+            }
+            else if("P2".equals(tokens.get(0))){
+                P2 =tokens;
+            }
+            else if("P3".equals(tokens.get(0))){
+                P3 =tokens;
+            }
+            else if("P4".equals(tokens.get(0))){
+                P4 =tokens;
+            }
             printMap();
+            System.out.println(P0);
+            System.out.println(P1);
         }
     
 }
