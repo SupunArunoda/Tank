@@ -83,7 +83,7 @@ String new_add=address.substring(0, address.length()-1);// to remove last # mark
     private static void printMap(){
         for(int i=0;i<mapMax;i++){
             for(int j=0;j<mapMax;j++){
-                System.out.print(map[i][j]);
+                System.out.print(map[i][j] +"  ");
             } 
              System.out.println();
          }
@@ -139,5 +139,19 @@ String new_add=address.substring(0, address.length()-1);// to remove last # mark
             System.out.println(P0);
             System.out.println(P1);
         }
+    public static void getLifePacks(String L){
+        
+        String details[]=L.split(":");
+        String[] positions =details[0].split(",");
+        x=Integer.parseInt(positions[0]);
+        y=Integer.parseInt(positions[1]);
+        int time=Integer.parseInt(details[1].substring(0,(details[1]).length()-1));
+        System.out.println("LIFE PACK X  ="+  y+" Y =" +x+" time "+ time);
+        
+        
+        
+        
+    }
+    
     
 }
