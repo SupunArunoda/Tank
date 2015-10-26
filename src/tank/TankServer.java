@@ -29,12 +29,20 @@ public class TankServer extends Thread{
                 BufferedReader msg=new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 String s=msg.readLine();
                 System.out.println(s);
-                if(s.charAt(0)=='I'&&s.charAt(1)==':'){//for priority I
+                if(s.charAt(0)=='I'&&s.charAt(1)==':'){//for game Initialisation
                     Mapviewer.createMap(s);
                 }
                 if(s.charAt(0)=='G'&&s.charAt(1)==':'){
                     
                     Mapviewer.updateMap(s);
+                }
+                if(s.charAt(0)=='C'&&s.charAt(1)==':'){//for coinPiles
+                    
+                    Mapviewer.updateCoins(s);
+                }
+                if(s.charAt(0)=='L'&&s.charAt(1)==':'){//for LifePacks
+                    
+                    Mapviewer.updateLifePacks(s);
                 }
                  
             } catch (IOException ex) {

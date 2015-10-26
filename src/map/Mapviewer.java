@@ -7,15 +7,21 @@ package map;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import obs.CoinPile;
+import obs.LifePack;
 
 /**
  *
  * @author Supun
  */
 public class Mapviewer {
+    
+    static View view;
    static int mapMax=10;
    static String map[][]=new String[mapMax][mapMax];
-   static int x=0,y=0;
+   static int x=0,y=0,coiintCounter=0;
    static ArrayList<String> P0;
    static ArrayList<String> P1;
    static ArrayList<String> P2;
@@ -78,7 +84,51 @@ String new_add=address.substring(0, address.length()-1);// to remove last # mark
             map[y][x]="3";//3 for water
         }
         printMap();
+        setGUI(map);
          
+    }
+   public static void updateCoins(String address){
+        String msg=address.substring(0, address.length()-1);// to remove last # mark
+        StringTokenizer str = new StringTokenizer(msg, ":");
+                    String coin = str.nextToken();
+                    String co_dir = str.nextToken();
+                    String life_t = str.nextToken();
+                    String po=str.nextToken();
+
+                    str = new StringTokenizer(co_dir, ",");
+                    int x = Integer.parseInt(str.nextToken());
+                    int y = Integer.parseInt(str.nextToken());
+                    int life = Integer.parseInt(life_t);
+                    int points=Integer.parseInt(po);
+                    //System.out.println(x + "," + y);
+                    new CoinPile( y, x, life, points,view);
+                   
+                    
+    }
+    public static void updateLifePacks(String address){
+        //L:3,0:68784#
+        String msg=address.substring(0, address.length()-1);// to remove last # mark
+        StringTokenizer str = new StringTokenizer(msg, ":");
+                    String lifeNa = str.nextToken();
+                    String li_dir = str.nextToken();
+                    String life_t = str.nextToken();
+                    
+
+                    str = new StringTokenizer(li_dir, ",");
+                    int x = Integer.parseInt(str.nextToken());
+                    int y = Integer.parseInt(str.nextToken());
+                    int life = Integer.parseInt(life_t);
+                    //System.out.println(x + "," + y);
+                    new LifePack(y, x, life, view);
+                    
+                   
+                    
+    }
+     static void setGUI(String x[][]){
+        view=new View(map,mapMax);
+        view.setVisible(true);
+        
+        
     }
     private static void printMap(){
         for(int i=0;i<mapMax;i++){
@@ -147,9 +197,6 @@ String new_add=address.substring(0, address.length()-1);// to remove last # mark
         y=Integer.parseInt(positions[1]);
         int time=Integer.parseInt(details[1].substring(0,(details[1]).length()-1));
         System.out.println("LIFE PACK X  ="+  y+" Y =" +x+" time "+ time);
-        
-        
-        
         
     }
     
