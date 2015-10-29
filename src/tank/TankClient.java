@@ -15,16 +15,16 @@ public class TankClient extends Thread{
     private String ip="127.0.0.1";
     private ServerSocket serverSocket;
     private int port=6000;
-private boolean connect() {
+private void connect() {
 		try {
 			socket = new Socket(ip, port);
 			dos = new DataOutputStream(socket.getOutputStream());
 		} catch (IOException e) {
 			System.out.println("Unable to connect to the address: ");
-			return false;
+			//return false;
 		}
 		System.out.println("Successfully connected to the server.");
-		return true;
+		//return true;
 	}
 
     

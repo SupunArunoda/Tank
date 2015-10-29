@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import obs.CoinPile;
 import obs.LifePack;
+import obs.Tank;
 
 /**
  *
@@ -22,17 +23,20 @@ public class Mapviewer {
    static int mapMax=10;
    static String map[][]=new String[mapMax][mapMax];
    static int x=0,y=0,coiintCounter=0;
+   static String playerNum=null;
    static ArrayList<String> P0;
    static ArrayList<String> P1;
    static ArrayList<String> P2;
    static ArrayList<String> P3;
    static ArrayList<String> P4;
+    static int currentX,currentY,currentDtrection;//to my player
+    static Tank mytank=null;
    
     
     public static void createMap(String address){
         
         String I;
-        String playerNum;
+        
         String brick;
         String stone;
         String water;
@@ -86,6 +90,47 @@ String new_add=address.substring(0, address.length()-1);// to remove last # mark
         printMap();
         setGUI(map);
          
+    }
+    public static void updatePlayer(String address){
+        StringTokenizer str = new StringTokenizer(address, ":");
+        ArrayList<String> detail = new ArrayList<String>();
+        while (str.hasMoreTokens()) {
+            detail.add(str.nextToken());
+        }
+
+        int j = 0;
+        for (int i = 1; i < detail.size(); i++) {
+            str = new StringTokenizer(detail.get(i), ";");
+            String p = str.nextToken();
+            if (p.charAt(0) == 'P') {
+                if (p.equals(playerNum)) {
+                    String coor = str.nextToken();
+                    currentDtrection = Integer.parseInt(str.nextToken());
+                    StringTokenizer str1 = new StringTokenizer(coor, ",");
+                    currentX = Integer.parseInt(str1.nextToken());
+                    currentY = Integer.parseInt(str1.nextToken());
+                    mytank.setDirec(currentDtrection);
+                    mytank.setX(currentX);
+                    mytank.setY(currentY);
+                    view.updateTank(mytank.getX(), mytank.getY(), mytank.getDirec());
+                } }}
+    }
+    public static void updateInitialTank(String address){
+        //String msg=address.substring(0, address.length()-1);// to remove last # mark
+     StringTokenizer str = new StringTokenizer(address, ":");
+                    String s = str.nextToken();
+                    s = str.nextToken();
+                    str = new StringTokenizer(s, ";");
+                    String plr = str.nextToken();
+                    String coord = str.nextToken();
+                    String direc = str.nextToken();
+
+                    str = new StringTokenizer(coord, ",");
+                   currentX = Integer.parseInt(str.nextToken());
+                    currentY = Integer.parseInt(str.nextToken());
+                    currentDtrection = Integer.parseInt(direc.substring(0, 1));
+                mytank= new Tank(currentX, currentY,currentDtrection , view);
+                   
     }
    public static void updateCoins(String address){
         String msg=address.substring(0, address.length()-1);// to remove last # mark

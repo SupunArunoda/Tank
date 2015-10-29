@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import obs.CoinPile;
+import tank.TankServer;
 
 /**
  *
@@ -20,6 +21,7 @@ public class View extends javax.swing.JFrame {
     /**
      * Creates new form View
      */
+   JLabel tank_lable;
    
     public View(String x[][],int max) {
       initComponents();
@@ -43,6 +45,35 @@ public class View extends javax.swing.JFrame {
             }
         }
     }
+    
+    int initialX=0,iniitialY=0;
+    public void updateTank(int x,int y,int dires){
+        
+        JLabel grids[][]={{grid_1,grid_2,grid_3,grid_4,grid_5,grid_6,grid_7,grid_8,grid_9,grid_10},{grid_11,grid_12,
+            grid_13,grid_14,grid_15,grid_16,grid_17,grid_18,grid_19,grid_20},{grid_21,grid_22,grid_23,grid_24,grid_25,grid_26,grid_27,grid_28,grid_29,grid_30},
+            {grid_31,grid_32,grid_33,grid_34,grid_35,grid_36,grid_37,grid_38,grid_39,grid_40},{grid_41,grid_42,grid_43,grid_44,grid_45,grid_46,grid_47,grid_48,grid_49,grid_50}
+        ,{grid_51,grid_52,grid_53,grid_54,grid_55,grid_56,grid_57,grid_58,grid_59,grid_60},{grid_61,grid_62,grid_63,grid_64,grid_65,grid_66,grid_67,grid_68,grid_69,grid_70}
+        ,{grid_71,grid_72,grid_73,grid_74,grid_75,grid_76,grid_77,grid_78,grid_79,grid_80},{grid_81,grid_82,grid_83,grid_84,grid_85,grid_86,grid_87,grid_88,grid_89,grid_90}
+        ,{grid_91,grid_92,grid_93,grid_94,grid_95,grid_96,grid_97,grid_98,grid_99,grid_100}};  
+      
+        if(initialX!=x ||iniitialY!=y){
+            grids[iniitialY][initialX].setIcon(new ImageIcon(getClass().getResource("/res/prt.jpg")));
+            initialX=x; iniitialY=y;
+        }
+        else if(dires==0){
+            grids[y][x].setIcon(new ImageIcon(getClass().getResource("/res/tank_red.jpg")));
+        }else if(dires==1){
+            grids[y][x].setIcon(new ImageIcon(getClass().getResource("/res/tank_red_east.jpg")));
+        }else if(dires==2){
+            grids[y][x].setIcon(new ImageIcon(getClass().getResource("/res/tank_red_south.jpg")));
+        }else if(dires==3){
+            grids[y][x].setIcon(new ImageIcon(getClass().getResource("/res/tank_red_west.jpg")));
+        }
+        tank_lable=grids[y][x];
+        
+        
+    }
+    
     public void updateCoin(int x,int y,String status){
          JLabel grids[][]={{grid_1,grid_2,grid_3,grid_4,grid_5,grid_6,grid_7,grid_8,grid_9,grid_10},{grid_11,grid_12,
             grid_13,grid_14,grid_15,grid_16,grid_17,grid_18,grid_19,grid_20},{grid_21,grid_22,grid_23,grid_24,grid_25,grid_26,grid_27,grid_28,grid_29,grid_30},
@@ -191,6 +222,11 @@ public class View extends javax.swing.JFrame {
         grid_98 = new javax.swing.JLabel();
         grid_99 = new javax.swing.JLabel();
         grid_100 = new javax.swing.JLabel();
+        btnUP = new javax.swing.JButton();
+        btnDown = new javax.swing.JButton();
+        btnRight = new javax.swing.JButton();
+        btnLeft = new javax.swing.JButton();
+        btnShoot = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -912,6 +948,41 @@ public class View extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        btnUP.setText("UP");
+        btnUP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUPActionPerformed(evt);
+            }
+        });
+
+        btnDown.setText("DOWN");
+        btnDown.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDownActionPerformed(evt);
+            }
+        });
+
+        btnRight.setText("RIGHT");
+        btnRight.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRightActionPerformed(evt);
+            }
+        });
+
+        btnLeft.setText("LEFT");
+        btnLeft.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLeftActionPerformed(evt);
+            }
+        });
+
+        btnShoot.setText("SHOOT");
+        btnShoot.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnShootActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -919,55 +990,75 @@ public class View extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(222, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnLeft)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnUP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnDown, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(14, 14, 14)
+                        .addComponent(btnRight))
+                    .addComponent(btnShoot, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(29, 29, 29))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 643, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 643, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(105, 105, 105)
+                        .addComponent(btnShoot, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(47, 47, 47)
+                        .addComponent(btnUP, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnDown, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnRight, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnLeft, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(28, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-  /*  public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        /*try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(View.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(View.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(View.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(View.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }*/
-        //</editor-fold>
+    private void btnUPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUPActionPerformed
+        // TODO add your handling code here:
+        TankServer.moveTank("UP");
+    }//GEN-LAST:event_btnUPActionPerformed
 
-        /* Create and display the form */
-       /* java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new View().setVisible(true);
-            }
-        });
-    }*/
+    private void btnDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDownActionPerformed
+        // TODO add your handling code here:
+        TankServer.moveTank("DOWN");
+    }//GEN-LAST:event_btnDownActionPerformed
+
+    private void btnRightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRightActionPerformed
+        // TODO add your handling code here:
+        TankServer.moveTank("RIGHT");
+    }//GEN-LAST:event_btnRightActionPerformed
+
+    private void btnLeftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLeftActionPerformed
+        // TODO add your handling code here:
+        TankServer.moveTank("LEFT");
+    }//GEN-LAST:event_btnLeftActionPerformed
+
+    private void btnShootActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShootActionPerformed
+        // TODO add your handling code here:
+        TankServer.moveTank("SHOOT");
+    }//GEN-LAST:event_btnShootActionPerformed
+
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDown;
+    private javax.swing.JButton btnLeft;
+    private javax.swing.JButton btnRight;
+    private javax.swing.JButton btnShoot;
+    private javax.swing.JButton btnUP;
     private javax.swing.JLabel grid_1;
     private javax.swing.JLabel grid_10;
     private javax.swing.JLabel grid_100;
@@ -1080,4 +1171,9 @@ public class View extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * @return the msgArea
+     */
+    
 }
