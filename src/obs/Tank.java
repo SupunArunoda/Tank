@@ -17,7 +17,7 @@ private View view;
     }
 @Override
     public void run(){
-        view.updateTank(getX(), getY(), getDirec());
+        view.updateTank(getX(), getY(), getDirec());//update the tank in GUI
     }
 
     /**

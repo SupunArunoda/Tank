@@ -20,7 +20,9 @@ public class CoinPile extends Thread{
     private int life;
     private int value;
     private View view;
-    public CoinPile(int X,int Y,int life,int value,View view) {
+    private int distance;
+    public CoinPile(int X,int Y,int life,int value,int distance,View view) {
+        this.distance=distance;
         this.X=X;
         this.Y=Y;
         this.life=life;
@@ -31,9 +33,9 @@ public class CoinPile extends Thread{
     @Override
     public  void run(){
         try {
-            view.updateCoin(this.getX(),this.getY(),"NEW");
+            getView().updateCoin(this.getX(),this.getY(),"NEW");
             this.sleep(getLife());
-            view.updateCoin(this.getX(),this.getY(),"REMOVE");
+            getView().updateCoin(this.getX(),this.getY(),"REMOVE");
         } catch (InterruptedException ex) {
             Logger.getLogger(CoinPile.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -106,6 +108,20 @@ public class CoinPile extends Thread{
      */
     public void setView(View view) {
         this.view = view;
+    }
+
+    /**
+     * @return the distance
+     */
+    public int getDistance() {
+        return distance;
+    }
+
+    /**
+     * @param distance the distance to set
+     */
+    public void setDistance(int distance) {
+        this.distance = distance;
     }
 
     /**

@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -33,7 +34,7 @@ public class Mapviewer {
     static Tank mytank=null;
    
     
-    public static void createMap(String address){
+    public static void createMap(String address){//To create the initial Map
         
         String I;
         
@@ -87,11 +88,15 @@ String new_add=address.substring(0, address.length()-1);// to remove last # mark
             y=Integer.parseInt(positions[1]);
             map[y][x]="3";//3 for water
         }
-        printMap();
-        setGUI(map);
+        for(int i=0;i<mapMax;i++){
+            for(int j=0;j<mapMax;j++){
+                System.out.println(map[i][j]);
+        }
+        }
+        setGUI(map);//To visual the app in GUI
          
     }
-    public static void updatePlayer(String address){
+    public static void updatePlayer(String address){//Update players contnuosly
         StringTokenizer str = new StringTokenizer(address, ":");
         ArrayList<String> detail = new ArrayList<String>();
         while (str.hasMoreTokens()) {
@@ -115,7 +120,7 @@ String new_add=address.substring(0, address.length()-1);// to remove last # mark
                     view.updateTank(mytank.getX(), mytank.getY(), mytank.getDirec());
                 } }}
     }
-    public static void updateInitialTank(String address){
+    public static void updateInitialTank(String address){//Update the initial tanks from command S
         //String msg=address.substring(0, address.length()-1);// to remove last # mark
      StringTokenizer str = new StringTokenizer(address, ":");
                     String s = str.nextToken();
@@ -132,7 +137,7 @@ String new_add=address.substring(0, address.length()-1);// to remove last # mark
                 mytank= new Tank(currentX, currentY,currentDtrection , view);
                    
     }
-   public static void updateCoins(String address){
+   public static void updateCoins(String address){//update all coins in map
         String msg=address.substring(0, address.length()-1);// to remove last # mark
         StringTokenizer str = new StringTokenizer(msg, ":");
                     String coin = str.nextToken();
@@ -146,11 +151,11 @@ String new_add=address.substring(0, address.length()-1);// to remove last # mark
                     int life = Integer.parseInt(life_t);
                     int points=Integer.parseInt(po);
                     //System.out.println(x + "," + y);
-                    new CoinPile( y, x, life, points,view);
+//                    new CoinPile( y, x, life, points,view);
                    
                     
     }
-    public static void updateLifePacks(String address){
+    public static void updateLifePacks(String address){//update Life packs
         //L:3,0:68784#
         String msg=address.substring(0, address.length()-1);// to remove last # mark
         StringTokenizer str = new StringTokenizer(msg, ":");
@@ -165,9 +170,7 @@ String new_add=address.substring(0, address.length()-1);// to remove last # mark
                     int life = Integer.parseInt(life_t);
                     //System.out.println(x + "," + y);
                     new LifePack(y, x, life, view);
-                    
-                   
-                    
+     
     }
      static void setGUI(String x[][]){
         view=new View(map,mapMax);
@@ -175,15 +178,7 @@ String new_add=address.substring(0, address.length()-1);// to remove last # mark
         
         
     }
-    private static void printMap(){
-        for(int i=0;i<mapMax;i++){
-            for(int j=0;j<mapMax;j++){
-                System.out.print(map[i][j] +"  ");
-            } 
-             System.out.println();
-         }
-        
-    }
+   
     public static void updateMap(String G){
         String raw_st = G.substring(2,G.length());
         
@@ -230,10 +225,60 @@ String new_add=address.substring(0, address.length()-1);// to remove last # mark
             else if("P4".equals(tokens.get(0))){
                 P4 =tokens;
             }
-            printMap();
+
             System.out.println(P0);
             System.out.println(P1);
         }
+     /*public ArrayList<String> direction(ArrayList<Cell> coordinates) {
+        ArrayList<String> dirc = new ArrayList<String>();
+        int crntX = currentX;
+        int crntY = currentY;
+        int crntDire = currentDtrection;
+        for (int i = coordinates.size() - 1; i >= 0; i--) {
+            if (crntX == coordinates.get(i).getX() && crntY < coordinates.get(i).getY()) {
+                crntX = coordinates.get(i).getX();
+                crntY = coordinates.get(i).getY();
+                if (crntDire == 2) {
+                    dirc.add("DOWN#");
+                } else {
+                    crntDire = 2;
+                    dirc.add("DOWN#");
+                    dirc.add("DOWN#");
+                }
+            } else if (crntX == coordinates.get(i).getX() && crntY > coordinates.get(i).getY()) {
+                crntX = coordinates.get(i).getX();
+                crntY = coordinates.get(i).getY();
+                if (crntDire == 0) {
+                    dirc.add("UP#");
+                } else {
+                    crntDire = 0;
+                    dirc.add("UP#");
+                    dirc.add("UP#");
+                }
+            } else if (crntX > coordinates.get(i).getX() && crntY == coordinates.get(i).getY()) {
+                crntX = coordinates.get(i).getX();
+                crntY = coordinates.get(i).getY();
+                if (crntDire == 3) {
+                    dirc.add("LEFT#");
+                } else {
+                    crntDire = 3;
+                    dirc.add("LEFT#");
+                    dirc.add("LEFT#");
+                }
+            } else if (crntX < coordinates.get(i).getX() && crntY == coordinates.get(i).getY()) {
+                crntX = coordinates.get(i).getX();
+                crntY = coordinates.get(i).getY();
+                if (crntDire == 1) {
+                    dirc.add("RIGHT#");
+                } else {
+                    crntDire = 1;
+                    dirc.add("RIGHT#");
+                    dirc.add("RIGHT#");
+                }
+            }
+        }
+        return dirc;
+    }*/
     public static void getLifePacks(String L){
         
         String details[]=L.split(":");
@@ -241,7 +286,7 @@ String new_add=address.substring(0, address.length()-1);// to remove last # mark
         x=Integer.parseInt(positions[0]);
         y=Integer.parseInt(positions[1]);
         int time=Integer.parseInt(details[1].substring(0,(details[1]).length()-1));
-        System.out.println("LIFE PACK X  ="+  y+" Y =" +x+" time "+ time);
+      
         
     }
     

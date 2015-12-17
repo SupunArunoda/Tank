@@ -15,7 +15,7 @@ public class TankClient extends Thread{
     private String ip="127.0.0.1";
     private ServerSocket serverSocket;
     private int port=6000;
-private void connect() {
+public void connect() {
 		try {
 			socket = new Socket(ip, port);
 			dos = new DataOutputStream(socket.getOutputStream());
@@ -23,8 +23,6 @@ private void connect() {
 			System.out.println("Unable to connect to the address: ");
 			//return false;
 		}
-		System.out.println("Successfully connected to the server.");
-		//return true;
 	}
 
     

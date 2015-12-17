@@ -42,6 +42,8 @@ public class View extends javax.swing.JFrame {
             }else if(x[i][j].equals("3")){
                 grids[i][j].setIcon(new ImageIcon(getClass().getResource("/res/water.jpg")));
             }
+           
+            
             }
         }
     }
