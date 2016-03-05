@@ -24,11 +24,11 @@ public class TankServer2 extends Thread {
     private int[][] map = new int[mapSize][mapSize];
     private Cell map2[][] = new Cell[mapSize][mapSize];
     private String playerNum;
-    private int currentX = 0;
-    private int currentY = 0;
-    private int[] currentX1 = new int[]{-1, -1, -1, -1};
-    private int[] currentY1 = new int[]{-1, -1, -1, -1};
-    private int[] currentHealth = new int[]{100, 100, 100, 100};
+    private int currentX = 0;// for my player's coordinates
+    private int currentY = 0;// for my player's coordinates
+    private int[] currentX1 = new int[]{-1, -1, -1, -1};//other players coordinates
+    private int[] currentY1 = new int[]{-1, -1, -1, -1};//other players coordinates
+    private int[] currentHealth = new int[]{100, 100, 100, 100};//to remove other players WRT life time
     private int[] kk = new int[]{0, 0, 0, 0};
     private int currentDtrection = 0;
     ArrayList<Stones> stone1 = new ArrayList<Stones>();
@@ -47,11 +47,11 @@ public class TankServer2 extends Thread {
         int tte = 0; //time to end
         int coinPileCounter = 0;
         CoinPile2 bestPile = new CoinPile2(1000, 0, mapSize - 1, mapSize, 10000);
-        boolean running = false;
-        ArrayList<String> coor = new ArrayList<String>();
+        boolean running = false;//set whether client tank is running or not
+        ArrayList<String> coor = new ArrayList<String>();//to store coordinates
         ArrayList<CoinPile2> coin = new ArrayList<CoinPile2>();//to store the coins
-        CoinPile2 testing = null;
-       // boolean shooting = false;
+        CoinPile2 testing = null;//to set a copy of a coinpile
+        boolean shooting = false;//set whether client tank is shooting or not
         int priorityX = -1;
         int priorityY = -1;
 
@@ -111,16 +111,47 @@ public class TankServer2 extends Thread {
                     coin.add(new CoinPile2(coinPileCounter, x, y, life, 0));
                     coinPileCounter++;
                 }
-                //
-
 
                 //set current position and direction according to the gloable msg
                 //update the life time of the coin piles
                 if (msg.charAt(0) == 'G' && msg.charAt(1) == ':') {
-                    
+                    shooting = false;
                     updateCoinPiles(coin);
                     setCurrentPosi(msg);
                     bestPile = bestCoinPile(coin);
+                    for (int i = 0; i < 4; i++) {
+                        if (currentX1[i] > -1) {
+                            //System.out.println(currentHealth[i]);
+                            if (currentDtrection == 0 && currentX == currentX1[i] && currentY > currentY1[i]) {//for north direction shooting
+                                shooting = true;
+                            } else if (currentDtrection == 1 && currentX < currentX1[i] && currentY == currentY1[i]) {//for east direction shooting
+                                shooting = true;
+                            } else if (currentDtrection == 2 && currentX == currentX1[i] && currentY < currentY1[i]) {//for south direction shooting
+                                shooting = true;
+                            } else if (currentDtrection == 3 && currentX > currentX1[i] && currentY == currentY1[i]) {//for west direction shooting
+                                shooting = true;
+                            } else {
+                                shooting = false;
+                            }
+                        }
+
+                        if (currentHealth[i] == 0) {//another plyer's life is zero or not
+                           
+                            priorityX = currentX1[i];
+                            priorityY = currentY1[i];
+                            System.out.println("dead man---" + currentX1[i] + "," + currentY1[i]);
+                            running = false;
+                            shooting = false;
+                            bestPile = new CoinPile2(1000, priorityX, priorityY, 100000, 1);
+                            System.out.println("best after dead--" + priorityX + "," + priorityY);
+                            break;
+                        }
+
+                        if (shooting == true) {
+                            break;
+                        }
+
+                    }
                     
                     //compute the path and direction array according to the best coin pile position
                     if (!running && bestPile != null) {
@@ -135,7 +166,7 @@ public class TankServer2 extends Thread {
                         setMap2Default(map2);
                         coor = direction(test);
                         k = coor.size();
-                        tte = k;//tte for time to end
+                        tte = k;// time to end
                         l = 0;
                     }
                     //
@@ -152,14 +183,16 @@ public class TankServer2 extends Thread {
                             running = false;
                         }
                     }
-
-                    if (l < k && running) {
+                    if (l < k && running && shooting) {
+                        cl.run("SHOOT#");
+                        //System.out.println("SHOOT#");
+                    } 
+                    else if (l < k && running) {
                         cl.run(coor.get(l));
                         //System.out.println(coor.get(l));
                         tte--;//decrease time to end value
                         l++;// increment the setting path value
                     }
-
                 }
                 //
                 //
@@ -288,7 +321,7 @@ public class TankServer2 extends Thread {
                         setMap2Default(map2);
                         ArrayList<String> coor = direction(test);// to travel through the coordinates 
                         distance = coor.size();//get the size
-                        if (coin.get(i).getLT() / 1000 >= distance && distance <= minDis) {
+                        if (coin.get(i).getLT() / 1000 >= distance && distance <= minDis) {//set minimum distance when several coins are apperared
                             best = coin.get(i);
                             coin.get(i).setDistance(distance);
                             minDis = distance;
@@ -322,7 +355,6 @@ public class TankServer2 extends Thread {
         while (str.hasMoreTokens()) {
             detail.add(str.nextToken());
         }
-
         int j = 0;
         for (int i = 1; i < detail.size(); i++) {
             str = new StringTokenizer(detail.get(i), ";");
@@ -337,12 +369,12 @@ public class TankServer2 extends Thread {
                 } else {// to set other player coordinates
                     String coor = str.nextToken();
                     StringTokenizer str1 = new StringTokenizer(coor, ",");
-                    currentX1[j] = Integer.parseInt(str1.nextToken());
-                    currentY1[j] = Integer.parseInt(str1.nextToken());
+                    currentX1[j] = Integer.parseInt(str1.nextToken());//set other plyer's X coordinates
+                    currentY1[j] = Integer.parseInt(str1.nextToken());//set other plyer's Y coordinates
                     String dir = str.nextToken();//set the direction
                     String wshot = str.nextToken();//check whether shot
                     currentHealth[j] = Integer.parseInt(str.nextToken());
-                    if (currentHealth[j] == 0 && kk[j] != 0) {
+                    if (currentHealth[j] == 0 && kk[j]!=0) {
                         currentX1[j] = -1;
                         currentY1[j] = -1;
                         currentHealth[j] = -1;
@@ -418,7 +450,7 @@ public class TankServer2 extends Thread {
         int crntx = currentX;
         int crnty = currentY;
         ArrayList<Cell> path = new ArrayList<Cell>();
-        while (!(crntx == dest.getX() && crnty == dest.getY())) {
+        while (!(crntx == dest.getX() && crnty == dest.getY())) {//add path while current position equals to destination position
             path.add(dest);
             dest = dest.getparent();
         }
@@ -451,8 +483,7 @@ public class TankServer2 extends Thread {
                     dirc.add("UP#");
                     dirc.add("UP#");
                 }
-            } 
-            else if (crntX > coordinates.get(i).getX() && crntY == coordinates.get(i).getY()) {
+            } else if (crntX > coordinates.get(i).getX() && crntY == coordinates.get(i).getY()) {
                 crntX = coordinates.get(i).getX();
                 crntY = coordinates.get(i).getY();
                 if (crntDire == 3) {
