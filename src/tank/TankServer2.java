@@ -11,6 +11,7 @@ import java.util.Comparator;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import map.Mapviewer;
 import obs.Cell;
 import obs.CoinPile2;
 import obs.Stones;
@@ -56,7 +57,9 @@ public class TankServer2 extends Thread {
         int priorityY = -1;
 
         //send join message
+        System.out.println("Before JOIN");
         cl.run("JOIN#");
+        System.out.println("After JOIN");
         //
 
         while (true) {
@@ -72,6 +75,7 @@ public class TankServer2 extends Thread {
                 
                 if (msg.charAt(0) == 'I' && msg.charAt(1) == ':') {
                     genarateMap(msg);// generate the initial map
+                     Mapviewer.createMap(msg);
                 }
 
                 if (msg.equals("PITFALL#") || msg.equals("DEAD#")) {
@@ -81,6 +85,7 @@ public class TankServer2 extends Thread {
 
                 //set the initial coordinates and directoin
                 if (msg.charAt(0) == 'S') {
+                    Mapviewer.updateInitialTank(msg);
                     StringTokenizer str = new StringTokenizer(msg, ":");
                     String s = str.nextToken();
                     s = str.nextToken();
@@ -98,6 +103,7 @@ public class TankServer2 extends Thread {
 
                 //store the coin piles
                 if (msg.charAt(0) == 'C' && msg.charAt(1) == ':') {
+                    
                     StringTokenizer str = new StringTokenizer(msg, ":");
                     String cc = str.nextToken();
                     String coord = str.nextToken();
@@ -115,6 +121,7 @@ public class TankServer2 extends Thread {
                 //set current position and direction according to the gloable msg
                 //update the life time of the coin piles
                 if (msg.charAt(0) == 'G' && msg.charAt(1) == ':') {
+                    Mapviewer.updatePlayer(msg);
                     shooting = false;
                     updateCoinPiles(coin);
                     setCurrentPosi(msg);
@@ -122,15 +129,15 @@ public class TankServer2 extends Thread {
                     for (int i = 0; i < 4; i++) {
                         if (currentX1[i] > -1) {
                             //System.out.println(currentHealth[i]);
-                            if (currentDtrection == 0 && currentX == currentX1[i] && currentY > currentY1[i]) {//for north direction shooting
+                            if (currentDtrection == 0 && currentX == currentX1[i] && currentY > currentY1[i]){//for north direction shooting
                                 shooting = true;
                             } else if (currentDtrection == 1 && currentX < currentX1[i] && currentY == currentY1[i]) {//for east direction shooting
                                 shooting = true;
                             } else if (currentDtrection == 2 && currentX == currentX1[i] && currentY < currentY1[i]) {//for south direction shooting
                                 shooting = true;
-                            } else if (currentDtrection == 3 && currentX > currentX1[i] && currentY == currentY1[i]) {//for west direction shooting
+                            }else if(currentDtrection == 3 && currentX > currentX1[i] && currentY == currentY1[i]) {//for west direction shooting
                                 shooting = true;
-                            } else {
+                            }else{
                                 shooting = false;
                             }
                         }
@@ -139,11 +146,11 @@ public class TankServer2 extends Thread {
                            
                             priorityX = currentX1[i];
                             priorityY = currentY1[i];
-                            System.out.println("dead man---" + currentX1[i] + "," + currentY1[i]);
+                            System.out.println("dead---" + currentX1[i] + "," + currentY1[i]);
                             running = false;
                             shooting = false;
                             bestPile = new CoinPile2(1000, priorityX, priorityY, 100000, 1);
-                            System.out.println("best after dead--" + priorityX + "," + priorityY);
+                            
                             break;
                         }
 
@@ -208,7 +215,7 @@ public class TankServer2 extends Thread {
                     }
                 }
 
-                if ((msg.equals("CELL_OCCUPIED#") || msg.equals("OBSTACLE;25#")) && l > 0) {
+                if ((msg.equals("CELL_OCCUPIED#") || msg.equals("OBSTACLE;25#")) && l > 0) {//OBSTACLE;25#
                     l--;
                     tte++;
                 }

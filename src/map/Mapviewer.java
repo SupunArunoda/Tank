@@ -151,7 +151,7 @@ String new_add=address.substring(0, address.length()-1);// to remove last # mark
                     int life = Integer.parseInt(life_t);
                     int points=Integer.parseInt(po);
                     //System.out.println(x + "," + y);
-//                    new CoinPile( y, x, life, points,view);
+           //       new CoinPile( y, x, life, points,view);
                    
                     
     }

@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 public class TankClient extends Thread{
     private Socket socket;
     private DataOutputStream dos;
-    private String ip="127.0.0.1";
+    private String ip="192.168.1.100";//192.168.1.100//127.0.0.1
     private ServerSocket serverSocket;
     private int port=6000;
 public void connect() {
