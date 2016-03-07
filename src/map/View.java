@@ -42,7 +42,16 @@ public class View extends javax.swing.JFrame {
             }else if(x[i][j].equals("3")){
                 grids[i][j].setIcon(new ImageIcon(getClass().getResource("/res/water.jpg")));
             }
+
            
+
+            else if(x[i][j].equals("P0")){
+                grids[i][j].setIcon(new ImageIcon(getClass().getResource("/res/tank_green.jpg")));
+            }
+            else if(x[i][j].equals("P1")){
+                grids[i][j].setIcon(new ImageIcon(getClass().getResource("/res/tank_grey.jpg")));
+            }
+
             
             }
         }
